@@ -74,6 +74,12 @@ Maybe I was wrong. Welcome send suggest to me about anything.
        
     }
  }
+ 
+//if a instance of class B register to bus    
+//it will receive all the event from 1-12    
+//1, 2, 3, 4, 5 will be post to IO thread        
+//6 and 7 will be post to MAIN thread (_same as child define_)
+//8, 9, 10, 11, 12 will be post to MAIN thread  
 ```
 
 #### post event    
@@ -85,14 +91,6 @@ RxBus.getDefault().pubishArray(eventId, arg1, arg2, ...); // post a event with v
 
 RxBus.getDefault().pubish(eventId, new CustomEvent()); // post a event with specific Event object 
 ```
-
-
-
-if a instance of class B register to bus    
-it will receive all the event from 1-12    
-1, 2, 3, 4, 5 will be post to IO thread        
-6 and 7 will be post to MAIN thread (_same as child define_)
-8, 9, 10, 11, 12 will be post to MAIN thread      
 
 
 ###dependency snippet: Gradle
