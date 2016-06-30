@@ -3,8 +3,13 @@ package com.simplejie.toolkit.rxbus.entity;
 import com.simplejie.toolkit.rxbus.PostingThread;
 import com.simplejie.toolkit.rxbus.annotation.Subscribe;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import rx.Observable;
@@ -35,7 +40,11 @@ public class SubscriberMethod {
         SubscriberMethod result = null;
 
         Class<?> objectClass = object.getClass();
-        Method[] methods = objectClass.getDeclaredMethods();
+        LinkedHashSet<Method> methods = new LinkedHashSet<>();
+        getDeclaredMethods(objectClass, methods);
+
+        ArrayList<String> methodKeys = new ArrayList<>();
+
         for (Method method : methods) {
             Subscribe subscribe = method.getAnnotation(Subscribe.class);
             if (subscribe != null && subscribe.eventId().length > 0) { //the method is a subscribe method and the id be set
@@ -44,12 +53,51 @@ public class SubscriberMethod {
                     if (result == null)
                         result = new SubscriberMethod(object);
 
-                    result.addMethod(method, types[1], subscribe.eventId(), subscribe.thread());
+                    ArrayList<Integer> filteredId = filterEventId(methodKeys, method.getName(), types[1].getName(), subscribe.eventId());
+                    if (filteredId != null) {
+                        result.addMethod(method, types[1], filteredId, subscribe.thread());
+                    }
                 }
             }
         }
 
         return result;
+    }
+
+    /**
+     * if the event exist in child, ignore the one in parent
+     * @param existKeys
+     * @param methodName
+     * @param parameterName
+     * @param ids
+     * @return null will be return, if no one id appropriate
+     */
+    static ArrayList<Integer> filterEventId(ArrayList<String> existKeys, String methodName, String parameterName, int[] ids) {
+        ArrayList<Integer> result = new ArrayList<>();
+        for (int id : ids) {
+            String key = methodName + parameterName + id;
+            if (!existKeys.contains(key)) {
+                result.add(id);
+                existKeys.add(key);
+            }
+        }
+
+        return result.size() > 0 ? result : null;
+    }
+
+    /**
+     * get declared methods contain super class's;
+     * make sure children's methods be added earlier
+     * @param objectClass
+     * @param result
+     */
+    static void getDeclaredMethods(Class<?> objectClass, LinkedHashSet<Method> result) {
+        if (objectClass != Object.class) {
+            result.addAll(Arrays.asList(objectClass.getDeclaredMethods()));
+            getDeclaredMethods(objectClass.getSuperclass(), result);
+        } else {
+            return;
+        }
     }
 
     public void register(Subject bus) {
@@ -120,12 +168,12 @@ public class SubscriberMethod {
         }
     }
 
-    private void addMethod(Method method, Class parameterType, int[] eventIds, PostingThread thread) {
+    private void addMethod(Method method, Class parameterType, ArrayList<Integer> eventIds, PostingThread thread) {
         methodWraps.add(new MethodWrap(method, parameterType, eventIds, thread));
     }
 
     private class MethodWrap {
-        MethodWrap(Method method, Class parameterType, int[] eventIds, PostingThread thread) {
+        MethodWrap(Method method, Class parameterType, ArrayList<Integer> eventIds, PostingThread thread) {
             this.method = method;
             this.parameterType = parameterType;
             this.eventIds = eventIds;
@@ -135,7 +183,7 @@ public class SubscriberMethod {
 
         Method method;
         Class parameterType;
-        int[] eventIds;
+        ArrayList<Integer> eventIds;
         PostingThread thread;
         LinkedList<Subscription> subscriptions;
     }

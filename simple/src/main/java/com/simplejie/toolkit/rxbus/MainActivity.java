@@ -2,17 +2,16 @@ package com.simplejie.toolkit.rxbus;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.simplejie.toolkit.rxbus.annotation.Subscribe;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     int eventId = 0;
 
     @Override
@@ -27,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 RxBus.getDefault().pubishArray(++eventId);
-                if (eventId == 7) {
-                    RxBus.getDefault().pubish(7, new CustomEvent());
+                RxBus.getDefault().pubish(eventId, new CustomEvent());
+                if (eventId == 12) {
                     eventId = 0;
                 }
             }
@@ -44,9 +43,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Subscribe(eventId = {1, 2, 3, 4, 5, 6}, thread = PostingThread.MAIN)
+    @Subscribe(eventId = {6, 7, 8, 9, 10, 11, 12}, thread = PostingThread.MAIN)
     public void onEvent(int id, Object[] args) {
-        Toast.makeText(this, String.format("eventId is %d", id), Toast.LENGTH_SHORT).show();
+        if (id < 7)
+            super.onEvent(id, args);
+        else
+            Toast.makeText(this, String.format("eventId is %d", id), Toast.LENGTH_SHORT).show();
     }
 
     @Subscribe(eventId = {7}, thread = PostingThread.COMPUTATION)

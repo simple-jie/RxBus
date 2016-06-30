@@ -1,5 +1,32 @@
 apply plugin: 'com.android.library'
 
+
+
+ext {
+    bintrayRepo = 'maven'     //仓库名
+    bintrayName = 'RxBus'   //项目名
+
+    publishedGroupId = 'com.simplejie.toolkit.rxbus'  //发布id，一般为包名
+    artifact = 'rxbus'     //jcenter的ArtifactId：一般是项目名
+    libraryVersion = '1.0.0'    //发布的版本号：每次上传必须不一样
+
+    siteUrl = 'https://github.com/simple-jie/RxBus'       //网站地址
+    gitUrl = 'https://github.com/simple-jie/RxBus.git'    //git地址
+
+    libraryName = 'rxbus'       //项目名
+    libraryDescription = 'A event bus for Android depend on RxJava'     //项目描述
+
+    //开发者信息
+    developerId = 'simple-jie'
+    developerName = 'Jie Xingbo'
+    developerEmail = 'jiexingbo@gmail.com'
+
+    //版权信息
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -18,9 +45,16 @@ android {
     }
 }
 
+
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile "io.reactivex:rxjava:1.1.5"
     compile "io.reactivex:rxandroid:1.2.0"
 }
+
+
+
+//apply from: 'https://raw.githubusercontent.com/llxdaxia/GradleScript/master/install_v1.gradle'
+//apply from: 'https://raw.githubusercontent.com/llxdaxia/GradleScript/master/bintray_v1.gradle'
