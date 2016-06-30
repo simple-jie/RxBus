@@ -76,6 +76,18 @@ Maybe I was wrong. Welcome send suggest to me about anything.
  }
 ```
 
+#### post event    
+
+```java
+RxBus.getDefault().pubishArray(eventId); // post a event without args. 
+
+RxBus.getDefault().pubishArray(eventId, arg1, arg2, ...); // post a event with variable arguments. 
+
+RxBus.getDefault().pubish(eventId, new CustomEvent()); // post a event with specific Event object 
+```
+
+
+
 if a instance of class B register to bus    
 it will receive all the event from 1-12    
 1, 2, 3, 4, 5 will be post to IO thread        
