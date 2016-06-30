@@ -1,8 +1,9 @@
 # RxBus for Android
 ## A event bus depend on RxJava RxAndroid
 
-  There have many RxBus on github, but not i wanted. So I decide to build this.
-I don't like to define a class for every EVENT， also I like handle a pile of events in one method like handleMessage of Handler
+There have many RxBus on github, but not i wanted. So I decide to build this.      
+I don't like to define class  for every EVENT     
+also I like handle a pile of events in one method like handleMessage of Handler
 
 Thanks for [AndroidKnife/RxBus](https://github.com/AndroidKnife/RxBus)
 
