@@ -1,5 +1,6 @@
 # RxBus for Android
-## A event bus depend on RxJava RxAndroid
+## A event bus depend on RxJava RxAndroid    
+## Every event target by a int value
 
 There have many RxBus on github, but not i wanted. So I decide to build this.      
 I don't like to define class  for every EVENT     
@@ -7,7 +8,6 @@ also I like handle a pile of events in one method like handleMessage of Handler
 
 Thanks for [AndroidKnife/RxBus](https://github.com/AndroidKnife/RxBus)
 
->All the event target by a int value
 
 Maybe I was wrong. Welcome send suggest to me about anything.
 
