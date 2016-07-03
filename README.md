@@ -96,7 +96,7 @@ RxBus.getDefault().pubish(eventId, new CustomEvent()); // post a event with spec
 ###dependency snippet: Gradle
 
 ```java
-compile 'com.simplejie.toolkit.rxbus:rxbus:1.0.1'
+compile 'com.simplejie.toolkit.rxbus:library:1.0.0'
 ```
 
 ###dependency snippet: Maven
@@ -104,8 +104,8 @@ compile 'com.simplejie.toolkit.rxbus:rxbus:1.0.1'
 ```java
 <dependency>
   <groupId>com.simplejie.toolkit.rxbus</groupId>
-  <artifactId>rxbus</artifactId>
-  <version>1.0.1</version>
+  <artifactId>library</artifactId>
+  <version>1.0.0</version>
   <type>pom</type>
 </dependency>
 ```
